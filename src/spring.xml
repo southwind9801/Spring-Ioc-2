@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd">
+	 
+	 <bean id="user" class="com.southwind.entity.User" depends-on="car">
+	 	<property name="id" value="1"></property>
+	 	<property name="name" value="张三"></property>
+		<property name="age" value="23"></property>
+	 </bean>
+	 
+	 <bean id="car" class="com.southwind.entity.Car">
+	 	<property name="id" value="1"></property>
+	 	<property name="brand" value="宝马"></property>
+	 </bean>
+	 
+	 <!-- 导入外部的资源文件 -->
+	 <context:property-placeholder location="classpath:jdbc.properties"></context:property-placeholder>
+	 
+	 <!-- 创建C3P0数据源 -->
+	 <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+	 	<property name="user" value="${user}"></property>
+		<property name="password" value="${pwd}"></property>
+		<property name="driverClass" value="${driverName}"></property>
+		<property name="jdbcUrl" value="${url}"></property>
+	 </bean>
+	 
+	 <bean id="user" class="com.southwind.entity.User" p:id="1" p:name="张三" p:age="23" p:car-ref="car"></bean>
+	
+	 <bean id="car" class="com.southwind.entity.Car" p:id="1" p:brand="宝马"></bean>
+	 
+</beans>
